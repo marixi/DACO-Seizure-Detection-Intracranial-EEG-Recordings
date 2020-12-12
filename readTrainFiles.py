@@ -9,6 +9,7 @@ This file reads all the data from the training set and stores it in two lists.
 
 import os
 import scipy.io
+import random
 
 # Lists to store the values.
 data_EEG = []
@@ -18,6 +19,11 @@ labels = []
 # Run the training dir.
 for dirname, _, filenames in os.walk('train'):
     
+    # Random the training files.
+    random.seed(30)
+    random.shuffle(filenames)
+    
+    # Read each of the files.
     for filename in filenames:
         
         # Load the data from each file.
