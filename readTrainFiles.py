@@ -13,20 +13,26 @@ import scipy.io
 # Lists to store the values.
 data_EEG = []
 channels_names = []
+labels = []
 
 # Run the training dir.
 for dirname, _, filenames in os.walk('train'):
+    
     for filename in filenames:
+        
         # Load the data from each file.
         data = scipy.io.loadmat(os.path.join(dirname, filename))
+        
         # Search for the field corresponding to the segments.
         j = 0
         for key in data.keys(): 
             if (key == 3): 
                 key_name = key
             j = j + 1
+            
         # Get the field corresponding to the segments.
         train_data = data.get(key)
+        
         # Get in separate arrays the values for the data, the length in seconds,
         # the sampling frequency, the channels and the number of the sequence.
         data = train_data['data'][0][0]
@@ -36,3 +42,9 @@ for dirname, _, filenames in os.walk('train'):
         channels = train_data['channels'][0][0][0]
         channels_names.append(data)
         sequence = train_data['sequence'][0][0][0][0]
+        
+        # Obtain the corresponding labels.
+        if 'interictal' in filename:
+            labels.append(0)
+        else:
+            labels.append(1)
