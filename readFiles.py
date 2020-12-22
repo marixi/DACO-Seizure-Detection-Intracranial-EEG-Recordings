@@ -11,6 +11,7 @@ import os
 import scipy.io
 import random
 import numpy as np
+from scipy.fft import rfft
 
 # Read training set.
 def readTrainFiles():
@@ -52,4 +53,25 @@ def readTrainFiles():
     
     # Zip the two lists together.
     train = list(zip(data_EEG, number_channels, labels))
+   
     return train
+
+def Preprocessing_fft(zip_data):
+    data_EEG, number_channels, labels = zip(*zip_data)
+    data_EEG_fft=[]
+    
+    #pre-processing using FFT (fast Fourier transform)
+    for j in range (len(data_EEG)):
+        yf = rfft(data_EEG[j])
+        data_EEG_fft.append(yf)
+        
+    train = list(zip(data_EEG_fft, number_channels, labels))
+    return train
+    
+    
+
+train=readTrainFiles()
+print(train)
+
+Preprocessing_fft(train)
+print(train)
